@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Server Error</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        .error-container {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            margin: 50px auto;
+            max-width: 400px;
+        }
+
+        h1 {
+            color: #e74c3c;
+        }
+
+        p {
+            font-size: 18px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="error-container">
+        <h1>Oops! Something went wrong.</h1>
+        <p>We encountered a server error while processing your request:</p>
+        <p>{{error_message}}</p>
+        <p>Please try again later or contact support if the problem persists.</p>
+    </div>
+</body>
+</html>

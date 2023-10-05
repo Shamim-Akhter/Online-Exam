@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Exam</title>
+    <style>
+      a:link {
+  background-color: #f44336;
+  color: white;
+  padding: 14px 25px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+}
+  
+  a.signout{
+  background-color: rgb(231, 229, 229);
+  border:1px solid black;
+  color: black;
+  padding: 5px 5px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  border-radius: 50px;
+  }
+  a.profile{
+  background-color: white;
+  border:1px solid blue;
+  color: blue;
+  padding: 5px 5px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  border-radius: 50px;
+  padding:5px 58px
+  }
+  
+   .popup {
+            display: none;
+            position: fixed;
+            top: 70px;
+            right:90px;
+            width: 30%;
+            height: 30%;
+            justify-content: center;
+            align-items: center;
+            
+        }
+        
+        .popup-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+        }
+
+      </style>
+</head>
+<body>
+  <button id="popupButton" style="float:right; margin-right: 50px; border: 0px;border-radius:50%; background-color:white;" onmouseover="document.getElementById('popupButton').style.cursor='pointer'"><img title="Me" src="data:{{user.ProfileImage.contentType}};base64,{{im}}" alt="Profile image" width="42" height="42" style=" border-radius:50%;"></button>
+     <div class="popup" id="popup">
+        <div class="popup-content">
+            <h2 style="text-align: center;">Profile Information</h2>
+            <!-- Add your profile information here -->
+            <section style="text-align: center;"><a class="profile" href="http://localhost:3000/userProfile">View Profile</a></section>
+            
+
+            <!-- Sign Out button -->
+            <a class="signout" href="http://localhost:3000/logout" onclick="alert('Logged out successfully')" style="">Logout</a>
+            <button id="closePopup" style="float:right;margin-top:10px; border-radius:50px;">Close</button>
+        </div>
+    </div>
+    <h1>Welcome {{user.FirstName}} {{user.LastName}}</h1>
+    <a href="http://localhost:3000/userProfile">My Profile</a>
+    <a id="getAllUserButton" href="http://localhost:3000/getAllUser" onclick="alert('Only Admin can access this !')">All User Profile</a>
+    <a href="http://localhost:3000/exam" >Start Exam</a>
+    
+  <script>
+        // Get references to elements
+        const popupButton = document.getElementById('popupButton');
+        const popup = document.getElementById('popup');
+        const closePopup = document.getElementById('closePopup');
+
+        // Function to open the popup
+        function openPopupWindow() {
+            popup.style.display = 'block';
+        }
+
+        // Function to close the popup
+        function closePopupWindow() {
+            popup.style.display = 'none';
+        }
+
+        // Event listeners
+        popupButton.addEventListener('click',openPopupWindow);
+        closePopup.addEventListener('click', closePopupWindow);
+
+        // Disable the getAllUser link when role of folk is User
+        let role = "{{user.Role}}";
+        if(role==='User'){
+             document.getElementById("getAllUserButton").style.pointerEvents = "none";
+        }
+      
+    </script>
+
+</body>
+</html>

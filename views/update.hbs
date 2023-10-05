@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Online Exam</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            padding: 20px;
+        }
+
+        form {
+            background-color: #fff;
+            width: 300px;
+            margin: 0 auto;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #555;
+        }
+
+        select{
+            width: 90%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            font-size: 16px;
+        }
+        input[type="number"] {
+            width: 82%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            font-size: 16px;
+        }
+
+        input[type="submit"] {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #555;
+        }
+    </style>
+</head>
+<body>
+    <h1>Update the details</h1>
+    <form action="/updateUser" method="post">
+    
+        <label for="collegeName">College Name:</label>
+        <select name="collegeName" id="collegeName" required>
+                <option value="" selected>select</option>
+                <option value="NIT Patna">NIT Patna</option>
+                <option value="NIT Warangal">NIT Warangal</option>
+                <option value="NIT Suratkal">NIT Suratkal</option>
+                <option value="NIT Jamshedpur">NIT Jamshedpur</option>
+                <option value="NIT Calicut">NIT Calicut</option>
+                <option value="NIT Trichy">NIT Trichy</option>
+                <option value="NIT Karnataka">NIT Karnataka</option>
+                <option value="NIT Rourkela">NIT Rourkela</option>
+                <option value="NIT Nagpur">NIT Nagpur</option>
+                <option value="NIT Durgapur">NIT Durgapur</option>
+                <option value="NIT Silchar">NIT Silchar</option>
+                <option value="NIT Jaipur">NIT Jaipur</option>
+                <option value="NIT Allahabad">NIT Allahabad</option>
+                <option value="NIT Kurukshetra">NIT Kurukshetra</option>
+                <option value="NIT Jalandhar">NIT Jalandhar</option>
+                <option value="NIT Delhi">NIT Delhi</option>
+                <option value="NIT Bhopal">NIT Bhopal</option>
+        </select>
+
+        <label for="branch">Branch:</label>
+        <select name="branch" id="branch" required>
+           <option value="" selected>select</option>
+           <option value="ECE">ECE</option>
+           <option value="CSE">CSE</option>
+           <option value="IT">IT</option>
+           <option value="ME">ME</option>
+           <option value="CE">CE</option>
+           <option value="EE">EE</option> 
+        </select>
+        
+        <label for="age">Age:</label>
+        <input type="number" id="age" name="age" required>
+
+        <input type="submit" value="Update">
+    </form>
+</body>
+</html>

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <!-- Include Handlebars.js library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        #profile {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            text-align: center;
+        }
+
+        p {
+            font-size: 16px;
+            margin: 5px 0;
+        }
+
+        img {
+            max-width: 150px;
+            max-height: 150px;
+            border-radius: 50%;
+            margin-top: 10px;
+        }
+         /* Styles for the popup */
+        .popup-container {
+            display: none;
+            position: fixed;
+            top: 0;
+            left:0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .popup-content {
+            width: 50%;
+            height: 60%;
+            background-color: white;
+            padding-left: 20px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+        }
+        .popup-container-delete {
+            display: none;
+            position: fixed;
+            top: 0;
+            left:0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .popup-content-delete {
+            width: 30%;
+            height: 40%;
+            background-color: white;
+            padding-left: 20px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <div id="profile">
+        <div id="profile-template" style="display: none;">
+           <button id="icon"style="background-color: #fff; border:0px" title="Click to add photo or edit details" onmouseover="document.getElementById('icon').style.cursor='pointer'"><img src="data:{{user.ProfileImage.contentType}};base64,{{im}}" alt="Profile Image"></button> 
+             
+             <!-- Adding popup container for profile update-->
+        <div class="popup-container" id="popupContainer">
+        <div class="popup-content">
+            <h2 style="text-align:left;">Profile <button id="cut" style="float:right; margin-right: 20px; font-size: medium;">X</button></h2>
+            <img src="data:{{user.ProfileImage.data.contentType}};base64,{{im}}" alt="Profile Image" class="image" style="max-width: 300px; max-height: 300px;border-radius: 50%; ">
+            <div>
+                <button id="addPhotoButton" style="margin-top: 30px;padding: 10px;">Add Photo</button>
+                <button id="addUpdateDetailsButton" style="margin-left: 220px;margin-top: 30px;padding: 10px;">Update Profile </button>
+                <button id="addDeleteAccountButton" style="margin-left: 230px;margin-top: 30px;padding: 10px;" onmouseover="document.getElementById('addDeleteAccountButton').style.backgroundColor='red'" onmouseout="document.getElementById('addDeleteAccountButton').style.backgroundColor='white'" >Delete Account</button>
+            </div>
+            
+        </div>
+        </div>
+
+        <!-- Adding popup container for profile delete-->
+        <div class="popup-container-delete" id="popupContainerDelete">
+        <div class="popup-content-delete">
+            <h2>Are you sure you want to delete your account ?</h2>
+            <p>By deleting your account you will loose all your data permanently and you won't be able to access any of our features </p>
+           <div>
+                <button id="addCancelButton" style="margin-top: 30px;padding: 10px;">Cancel</button>
+                <button id="delete1" style="margin-left: 230px;margin-top: 30px;padding: 10px;" data="{{user._id}}">Delete</button>
+            </div>
+            
+        </div>
+        </div>
+
+            <!-- User Information-->
+            <p><strong>Name:</strong> {{user.FirstName}} {{user.LastName}}</p>
+            <p><strong>College Name:</strong> {{user.CollegeName}}</p>
+            <p><strong>Branch:</strong> {{user.Branch}}</p>
+            <p><strong>Age:</strong> {{user.Age}}</p>
+            <p><strong>Marks:</strong> {{user.MarksObtained}}</p>
+            <p><strong>Email:</strong> {{user.EmailId}}</p>
+            <p><strong>Mobile Number:</strong> {{user.Mobile}}</p>
+        </div>
+    </div>
+  
+    <script>
+        // Sample user profile data returned from the server (replace with your actual data)
+        var userData = {};
+
+        // Get the Handlebars template source from the script element
+        var source = document.getElementById("profile-template").innerHTML;
+
+        // Compile the Handlebars template
+        var template = Handlebars.compile(source);
+
+        // Render the user's profile data
+        var html = template(userData);
+
+        // Insert the rendered HTML into the "profile" div
+        document.getElementById("profile").innerHTML = html;
+
+        // Get references to elements
+        const openPopupButton = document.getElementById('icon');
+        const popupContainer = document.getElementById('popupContainer');
+        const popupContainerDelete=document.getElementById('popupContainerDelete');
+        const cut=document.getElementById('cut');
+        const cancel = document.getElementById('addCancelButton');
+        const addPhotoButton = document.getElementById('addPhotoButton');
+        const addUpdateDetailsButton = document.getElementById('addUpdateDetailsButton');
+        const deleteButton = document.getElementById('addDeleteAccountButton');
+        const deleteButtonConfirm = document.getElementById('delete1');
+
+        deleteButton.addEventListener('click',()=>{
+            popupContainerDelete.style.display='flex';
+        })
+        deleteButtonConfirm.addEventListener('click',()=>{
+             let d = deleteButtonConfirm.getAttribute('data');
+             fetch(`http://localhost:3000/deleteUser/${d}`,{
+                method:'DELETE'}
+             ).then(response => console.log(response.status));
+             alert('Your account is permanently deleted');
+             window.open('http://localhost:3000',"_self");  
+            
+        })
+          
+        addUpdateDetailsButton.addEventListener('click',()=>{
+            window.open('http://localhost:3000/updateUser',"_self");
+        })
+
+        // Function to open the popup
+        function openPopup() {
+            popupContainer.style.display = 'flex';
+        }
+        
+        // Function to close the popup
+        function closePopup() {
+            popupContainer.style.display = 'none';
+        }
+
+        // Event listeners
+        openPopupButton.addEventListener('click', openPopup);
+        document.addEventListener('click', (event) => {
+            if (event.target === popupContainer || event.target===cut) {
+                closePopup();
+            }
+        });
+
+        document.addEventListener('click', (event) => {
+            if (event.target === popupContainerDelete || event.target===cancel) {
+                popupContainerDelete.style.display='none';
+            }
+        });
+
+        addPhotoButton.addEventListener('click', () => {
+            // Add your sign-out logic here
+            window.open('http://localhost:3000/uploadImage');   
+        });
+    </script>
+</body>
+</html>

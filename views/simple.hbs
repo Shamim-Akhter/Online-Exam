@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        table, th, td {
+        border: 1px solid black;
+        border-collapse: collapse;
+        text-align: center;
+       }
+    </style>
+</head>
+<body>
+    <section>
+        <h2>Apply Filters: </h2>
+        <form action="/getAllUser" method="get" enctype="application/x-www-form-urlencoded">
+
+           <!-- First Dropdown Menu -->
+    <label for="dropdown1">College:</label>
+    <select id="dropdown1" name="CollegeName" style="margin-right:10px">
+                <option value="" selected>select</option>
+                <option value="NIT Patna">NIT Patna</option>
+                <option value="NIT Warangal">NIT Warangal</option>
+                <option value="NIT Suratkal">NIT Suratkal</option>
+                <option value="NIT Jamshedpur">NIT Jamshedpur</option>
+                <option value="NIT Calicut">NIT Calicut</option>
+                <option value="NIT Trichy">NIT Trichy</option>
+                <option value="NIT Karnataka">NIT Karnataka</option>
+                <option value="NIT Rourkela">NIT Rourkela</option>
+                <option value="NIT Nagpur">NIT Nagpur</option>
+                <option value="NIT Durgapur">NIT Durgapur</option>
+                <option value="NIT Silchar">NIT Silchar</option>
+                <option value="NIT Jaipur">NIT Jaipur</option>
+                <option value="NIT Allahabad">NIT Allahabad</option>
+                <option value="NIT Kurukshetra">NIT Kurukshetra</option>
+                <option value="NIT Jalandhar">NIT Jalandhar</option>
+                <option value="NIT Delhi">NIT Delhi</option>
+                <option value="NIT Bhopal">NIT Bhopal</option>
+    </select>
+
+    <!-- Second Dropdown Menu -->
+    <label for="dropdown2">Branch:</label>
+    <select id="dropdown2" name="Branch" style="margin-right:10px">
+        <option value="" selected>select</option>
+        <option value="ECE">ECE</option>
+        <option value="CSE">CSE</option>
+        <option value="IT">IT</option>
+        <option value="ME">ME</option>
+        <option value="CE">CE</option>
+        <option value="EE">EE</option>
+    </select>
+
+    <label for="dropdown3">Gender:</label>
+    <select id="dropdown3" name="Gender" style="margin-right:10px">
+        <option value="" selected>select</option>
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+        <option value="Transgender">Transgender</option>
+    </select>
+
+    <!-- Fourth Dropdown Menu -->
+    <label for="dropdown4">Marks:</label>
+    <select id="dropdown4" name="MarksObtained" style="margin-right:10px">
+        <option value="" selected>select</option>
+        <option value="0">0</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+    </select>
+    <button type="submit">Apply</button>
+        </form>
+    </section>
+    <h1>All users list</h1>
+     {{#if listExists}}
+      <table style="width:100%">
+        <tr>
+         <th>Sr. No.</th>
+         <th>Name</th>
+         <th>Branch</th>
+         <th>College</th>
+         <th>Marks</th>
+         <th>Gender</th>
+         <th>Contact</th>
+        </tr>
+        {{#each users}}
+         <tr>
+            <td>{{ @index}}</td>
+            <td>{{this.FirstName}} {{this.LastName}}</td>
+            <td>{{this.Branch}}</td>
+            <td>{{this.CollegeName}}</td>
+            <td>{{this.MarksObtained}}</td>
+            <td>{{this.Gender}}</td>
+            <td>{{this.Mobile}}, {{this.EmailId}}</td>
+         </tr>
+        {{/each}}
+        </table>
+      {{else}}
+      <p>No users found</p>
+     {{/if}}
+     
+</body>
+</html>

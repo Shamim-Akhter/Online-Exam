@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Exam</title>
+</head>
+<body>
+      <p id="demo" style="position:absolute; left:1400px; font-size:large"></p>
+      <h1>There are total 5 objective questions. Once you are done, please submit </h1>
+
+<form id="myform" action="/exam" method="POST">
+  <p>1. What is the full form of HTML:</p>
+  <input type="radio" id="Q1O1" name="Q1" value="1">
+  <label for="Q1O1">Hypertext Markup Language</label><br>
+  <input type="radio" id="Q1O2" name="Q1" value="2">
+  <label for="Q1O2">Hydra Markup Language</label><br>
+  <input type="radio" id="Q1O3" name="Q1" value="3">
+  <label for="Q1O3">Hitech Markup Language</label><br>  
+
+  <p>2. Which programming langauge is platform independent:</p>
+  <input type="radio" id="Q2O1" name="Q2" value="1">
+  <label for="Q2O1">C</label><br>
+  <input type="radio" id="Q2O2" name="Q2" value="2">
+  <label for="Q2O2">C++</label><br>  
+  <input type="radio" id="Q2O3" name="Q2" value="3">
+  <label for="Q2O3">Java</label><br>
+  
+  <p>3. Which searching algorithm is used when time complexity matters:</p>
+  <input type="radio" id="Q3O1" name="Q3" value="1">
+  <label for="Q3O1">Linear Search</label><br>
+  <input type="radio" id="Q3O2" name="Q3" value="2">
+  <label for="Q3O2">Binary Search</label><br>  
+  <input type="radio" id="Q3O3" name="Q3" value="3">
+  <label for="Q3O3">None of the above</label><br>
+
+  <p>4. Which of the following data structure is non linear:</p>
+  <input type="radio" id="Q4O1" name="Q4" value="1">
+  <label for="Q4O1">Array</label><br>
+  <input type="radio" id="Q4O2" name="Q4" value="2">
+  <label for="Q4O2">Linked List</label><br>  
+  <input type="radio" id="Q4O3" name="Q4" value="3">
+  <label for="Q4O3">Graph</label><br>
+
+  <p>5. Which of the following data structure follows LIFO rule:</p>
+  <input type="radio" id="Q5O1" name="Q5" value="1">
+  <label for="Q5O1">Array</label><br>
+  <input type="radio" id="Q5O2" name="Q5" value="2">
+  <label for="Q5O2">Stack</label><br>  
+  <input type="radio" id="Q5O3" name="Q5" value="3">
+  <label for="Q5O3">Queue</label><br><br>
+
+  <br>
+  <input type="submit" onclick="alert('Congratulation you have successfully given exam')" value="Submit">
+</form> 
+
+<!-- Script to handle time and automatic submit the form-->
+<script>
+
+  var hour=1;
+  var minute=0;
+  var second=0;
+
+  setInterval(myFunction, 1000);
+
+function myFunction() {
+  
+      if(hour==0 && second==0 && minute==0)
+      {
+        document.getElementById("myform").submit();
+        alert("Time out ! Your response automatically submitted");
+      }
+
+  document.getElementById("demo").innerHTML="Time left:  "+hour+":"+minute+":"+second;
+    second--;
+    
+    if(second<0)
+    second+=60;
+    if(second==59)
+     minute--;
+     if(minute<0)
+     minute+=60
+
+     if(minute==59)
+       {
+        if(second==59)
+          hour--; 
+        }
+}
+  </script>
+</body>
+</html>
