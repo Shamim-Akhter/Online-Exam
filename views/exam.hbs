@@ -8,61 +8,83 @@
 </head>
 <body>
       <p id="demo" style="position:absolute; left:1400px; font-size:large"></p>
-      <h1>There are total 5 objective questions. Once you are done, please submit </h1>
-
+      <h1 id="h1">There are total 5 objective questions. Once you are done, please submit </h1>
+      <div id="marksSection" style="display:none;  width: 500px;margin-left:600px;background-color:whitesmoke;padding:10px;">
+        <h3 style="text-align: center;">Marks: {{marksObtained}}/5</h3>
+        <div style="margin-left: 10px; margin-right:10px;">
+        <hr>
+        <p>Total number of questions: 5</p>
+        <p>Number of questions answered correctly: {{marksObtained}}/5</p>
+        <p>Number of questions answered wrong: {{wrongAnswered}}/5</p>
+        <p>Number of unanswered question: {{unansweredQuestions}}/5</p>
+        </div>
+      </div>
 <form id="myform" action="/exam" method="POST">
   <p>1. What is the full form of HTML:</p>
-  <input type="radio" id="Q1O1" name="Q1" value="1">
-  <label for="Q1O1">Hypertext Markup Language</label><br>
+  <div id="Que1">
+  <input type="radio" id="Q1O1" name="Q1" value="1" >
+  <label for="Q1O1" id="Que1O1">Hypertext Markup Language</label><br>
   <input type="radio" id="Q1O2" name="Q1" value="2">
-  <label for="Q1O2">Hydra Markup Language</label><br>
+  <label for="Q1O2" id="Que1O2">Hydra Markup Language</label><br>
   <input type="radio" id="Q1O3" name="Q1" value="3">
-  <label for="Q1O3">Hitech Markup Language</label><br>  
+  <label for="Q1O3" id="Que1O3">Hitech Markup Language</label><br>  
+  </div>
 
   <p>2. Which programming langauge is platform independent:</p>
+  <div id="Que2">
   <input type="radio" id="Q2O1" name="Q2" value="1">
-  <label for="Q2O1">C</label><br>
+  <label for="Q2O1" id="Que2O1">C</label><br>
   <input type="radio" id="Q2O2" name="Q2" value="2">
-  <label for="Q2O2">C++</label><br>  
+  <label for="Q2O2" id="Que2O2">C++</label><br>  
   <input type="radio" id="Q2O3" name="Q2" value="3">
-  <label for="Q2O3">Java</label><br>
-  
+  <label for="Q2O3" id="Que2O3">Java</label><br>
+  </div>
+
   <p>3. Which searching algorithm is used when time complexity matters:</p>
+  <div id="Que3">
   <input type="radio" id="Q3O1" name="Q3" value="1">
-  <label for="Q3O1">Linear Search</label><br>
+  <label for="Q3O1" id="Que3O1">Linear Search</label><br>
   <input type="radio" id="Q3O2" name="Q3" value="2">
-  <label for="Q3O2">Binary Search</label><br>  
+  <label for="Q3O2" id="Que3O2">Binary Search</label><br>  
   <input type="radio" id="Q3O3" name="Q3" value="3">
-  <label for="Q3O3">None of the above</label><br>
+  <label for="Q3O3" id="Que3O3">None of the above</label><br>
+  </div>
 
   <p>4. Which of the following data structure is non linear:</p>
+  <div id="Que4">
   <input type="radio" id="Q4O1" name="Q4" value="1">
-  <label for="Q4O1">Array</label><br>
+  <label for="Q4O1" id="Que4O1">Array</label><br>
   <input type="radio" id="Q4O2" name="Q4" value="2">
-  <label for="Q4O2">Linked List</label><br>  
+  <label for="Q4O2" id="Que4O2">Linked List</label><br>  
   <input type="radio" id="Q4O3" name="Q4" value="3">
-  <label for="Q4O3">Graph</label><br>
+  <label for="Q4O3" id="Que4O3">Graph</label><br>
+  </div>
 
   <p>5. Which of the following data structure follows LIFO rule:</p>
+  <div id="Que5">
   <input type="radio" id="Q5O1" name="Q5" value="1">
-  <label for="Q5O1">Array</label><br>
+  <label for="Q5O1" id="Que5O1">Array</label><br>
   <input type="radio" id="Q5O2" name="Q5" value="2">
-  <label for="Q5O2">Stack</label><br>  
+  <label for="Q5O2" id="Que5O2">Stack</label><br>  
   <input type="radio" id="Q5O3" name="Q5" value="3">
-  <label for="Q5O3">Queue</label><br><br>
-
+  <label for="Q5O3" id="Que5O3">Queue</label><br><br>
+  </div>
   <br>
-  <input type="submit" onclick="alert('Congratulation you have successfully given exam')" value="Submit">
+  <button id="submitButton" onclick="alert('Congratulation you have successfully given exam')" >Submit</button>
 </form> 
 
 <!-- Script to handle time and automatic submit the form-->
 <script>
-
+  const submitButton=document.getElementById('submitButton');
+  const marksSection=document.getElementById('marksSection');
+  const timeShow = document.getElementById('demo');
+  const h1= document.getElementById('h1');
   var hour=1;
   var minute=0;
   var second=0;
-
-  setInterval(myFunction, 1000);
+  console.log("{{examGiven}}");
+  
+ const setTimer = setInterval(myFunction, 1000);
 
 function myFunction() {
   
@@ -88,6 +110,103 @@ function myFunction() {
           hour--; 
         }
 }
+if("{{examGiven}}"==="true"){
+    marksSection.style.display="block";
+    clearInterval(setTimer);
+    submitButton.style.display="none";
+    h1.style.display="none";
+
+    let marksArray="{{marksArray}}".split(',');
+    let unansweredQuestionsArray = "{{unansweredQuestionsArray}}".split(',');
+    let wrongAnsweredArray = "{{wrongAnsweredArray}}".split(',');
+    let correctAnswerArray = "{{correctAnswer}}".split(',');
+    console.log(marksArray);
+      console.log(wrongAnsweredArray);
+     for(let i=0;i<5;i++){
+        let num = i+1;
+        
+         if(unansweredQuestionsArray[i]==='true' || marksArray[i] !== ''){
+              let ans = correctAnswerArray[i];
+                 
+                 const para = document.createElement("p");
+                 para.innerHTML="&#x2713;";
+                 const element = document.getElementById("Que"+num+"O"+ans);
+                 element.appendChild(para);
+                 para.style.display="inline";
+                 para.style.marginLeft="15px";
+                 para.style.borderRadius="50%";
+                 para.style.color="white";
+                 para.style.backgroundColor="green";
+                 para.style.padding="2px 5px";
+                 para.style.fontSize="10px";
+         }
+         
+       
+        if( wrongAnsweredArray[i] !== ''){
+
+                let ans = correctAnswerArray[i];
+                 
+                 const para1 = document.createElement("p");
+                 para1.innerHTML="&#x2713;";
+                 const element1 = document.getElementById("Que"+num+"O"+ans);
+                 element1.appendChild(para1);
+                 para1.style.display="inline";
+                 para1.style.marginLeft="15px";
+                 para1.style.borderRadius="50%";
+                 para1.style.color="white";
+                 para1.style.backgroundColor="green";
+                 para1.style.padding="2px 5px";
+                 para1.style.fontSize="10px";
+
+                let wrongAns = wrongAnsweredArray[i];
+                 
+                 const para2 = document.createElement("p");
+                 para2.innerHTML="X";
+                 const element2 = document.getElementById("Que"+num+"O"+wrongAns);
+                 element2.appendChild(para2);
+                 para2.style.display="inline";
+                 para2.style.marginLeft="15px";
+                 para2.style.borderRadius="50%";
+                 para2.style.color="white";
+                 para2.style.backgroundColor="red";
+                 para2.style.padding="2px 5px";
+                 para2.style.fontSize="10px";
+         }
+         
+
+        if(marksArray[i] !== ''){
+             console.log("Q"+num+"O"+marksArray[i]);
+             document.getElementById("Q"+num+"O"+marksArray[i]).checked = true;
+    }
+
+       if(wrongAnsweredArray[i]!==''){
+             console.log("Q"+num+"O"+wrongAnsweredArray[i]);
+             document.getElementById("Q"+num+"O"+wrongAnsweredArray[i]).checked = true;
+    }
+    
+     }
+    
+    
+    document.getElementById('Q1O1').disabled=true;
+    document.getElementById('Q1O2').disabled=true;
+    document.getElementById('Q1O3').disabled=true;
+
+    document.getElementById('Q2O1').disabled=true;
+    document.getElementById('Q2O2').disabled=true;
+    document.getElementById('Q2O3').disabled=true;
+
+    document.getElementById('Q3O1').disabled=true;
+    document.getElementById('Q3O2').disabled=true;
+    document.getElementById('Q3O3').disabled=true;
+
+    document.getElementById('Q4O1').disabled=true;
+    document.getElementById('Q4O2').disabled=true;
+    document.getElementById('Q4O3').disabled=true;
+
+    document.getElementById('Q5O1').disabled=true;
+    document.getElementById('Q5O2').disabled=true;
+    document.getElementById('Q5O3').disabled=true;
+  }
   </script>
 </body>
 </html>

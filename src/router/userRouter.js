@@ -2,9 +2,10 @@ var express = require('express');
 var userRouter=express.Router();
 var protectRoute=require('./authHelper');
 var jwt=require('jsonwebtoken');
-var {getUser,getAllUser,deleteUser,getUpdateUser,postUpdateUser}=require('../../controller/userController');
+var {getUser,getAllUser,deleteUser,getUpdateUser,postUpdateUser,getQuiz}=require('../../controller/userController');
 var {logout,getExam,calculateMarks} = require('../../controller/authController');
 var Register=require('../models/registers');
+const {generalQuestion,computerScienceQuestion,mathQuestion} = require('../bookData/questions.js');
 
 
 
@@ -39,4 +40,21 @@ userRouter.route('/exam')
 .get(getExam)
 .post(calculateMarks);
 
+userRouter.route('/exam/quiz/:quizId').get(getQuiz);
+
+//different quiz based on quizId
+userRouter.route('/quiz/:quizId').get((req,res)=>{
+    console.log(req.params.quizId);
+    console.log(typeof req.params.quizId);
+    if(req.params.quizId === '1'){
+        res.send(generalQuestion);
+    }
+    else if(req.params.quizId === '2'){
+        res.send(computerScienceQuestion);
+    }
+    else if(req.params.quizId === '3'){
+        res.send(mathQuestion);
+    }
+        
+})
 module.exports=userRouter;

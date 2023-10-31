@@ -121,33 +121,106 @@ module.exports.logout =  function logout(req,res){
 }
 
 module.exports.getExam=function getExam(req,res){
-    res.render('exam');
+    res.render('exam',{examGiven:false});
 }
 
 module.exports.calculateMarks= async function calculateMarks(req,res){
        let marks=0;
+       let unansweredQuestions=0;
+       let wrongAnswered=0;
+       let marksArray = new Array(5).fill('');
+       let unansweredQuestionsArray = new Array(5).fill(false);
+       let wrongAnsweredArray = new Array(5);
+       let correctAnswer = ['1','3','2','3','2'];
        let answer1=req.body.Q1;
        let answer2=req.body.Q2;
        let answer3=req.body.Q3;
        let answer4=req.body.Q4;
        let answer5=req.body.Q5;
-       if(answer1==1)
+       if(answer1==='1'){
           marks++;
-       if(answer2==3)
+          marksArray[0]=answer1;
+       }
+          
+       if(answer2==='3'){
           marks++;
-       if(answer3==2)
-          marks++;
-       if(answer4==3)
-          marks++;
-       if(answer5==2)
-          marks++;
+          marksArray[1]=answer2;
+       }
          
+       if(answer3==='2'){
+         marks++;
+         marksArray[2]=answer3;
+       }
+          
+       if(answer4==='3'){
+         marks++;
+         marksArray[3]=answer4;
+       }
+          
+       if(answer5==='2'){
+         marks++;
+         marksArray[4]=answer5;
+     }
+          
+         
+        if(answer1 === undefined){
+            unansweredQuestions++;
+            unansweredQuestionsArray[0]=true;
+        }
+           
+        if(answer2 === undefined){
+            unansweredQuestions++;
+            unansweredQuestionsArray[1]=true;
+        }
+           
+        if(answer3 === undefined){
+            unansweredQuestions++;
+            unansweredQuestionsArray[2]=true;
+        }
+           
+        if(answer4 === undefined){
+            unansweredQuestions++;
+            unansweredQuestionsArray[3]=true;
+        }
+           
+        if(answer5 === undefined){
+            unansweredQuestions++;
+            unansweredQuestionsArray[4]=true;
+        }
+           
+
+        if(answer1 !== '1' && answer1 !== undefined){
+            wrongAnswered++;
+            wrongAnsweredArray[0]=answer1;
+        }
+           
+        if(answer2 !== '3' && answer2 !== undefined){
+            wrongAnswered++;
+            wrongAnsweredArray[1]=answer2;
+        }
+           
+        if(answer3 !== '2' && answer3 !== undefined){
+            wrongAnswered++;
+            wrongAnsweredArray[2]=answer3;
+        }
+           
+        if(answer4 !== '3' && answer4 !== undefined){
+            wrongAnswered++;
+            wrongAnsweredArray[3]=answer4;
+        }
+           
+        if(answer5 !== '2' && answer5 !== undefined){
+            wrongAnswered++;
+            wrongAnsweredArray[4]=answer5;
+        }
+           
+
 
           try{
             let verify=jwt.verify(req.cookies.jwtCookie,process.env.SECRET_KEY);
             let id=verify.payload;
          let user=await Register.findOneAndUpdate({_id:id},{MarksObtained:marks});
-         res.redirect('/home');
+         res.render('exam',{user:user, examGiven:true, marksObtained:marks, wrongAnswered:wrongAnswered, unansweredQuestions:unansweredQuestions, marksArray:marksArray, unansweredQuestionsArray:unansweredQuestionsArray, wrongAnsweredArray:wrongAnsweredArray,correctAnswer:correctAnswer});
         }
          catch(err){
             res.render('error',{error_message:err.message});

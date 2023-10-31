@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        button{
+            margin-right: 20px;
+            margin-bottom: 20px;
+        }
+
+       #contentLeft { 
+    float: left; 
+    width: 45%;
+    
+}
+#contentRight { 
+    float: right; 
+    width: 45%; 
+    height: 285px;
+}
+#timer {
+            font-size: 3em;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            background-color: green;
+        }
+    </style>
+</head>
+<body onload="startQuiz()">
+    <div style="border: 1px solid red;">
+        <div id="timer" style="border:1px solid black ; margin: 10px auto; height: 150px; width:10%">
+            <div>00:00</div>
+        </div>
+        <h1 id="finishMessage" style="text-align: center;"></h1>
+        <div id="contentAndResponse" style="border: 1px solid blue; margin: 5px; height: 300px;">
+        <div id="contentLeft" style="border: 1px solid green; margin: 5px;">
+        <div id="question-content">
+            <p id="demo">Question will be here</p>
+        </div>
+        <div id="option-content" >
+            <div><span><b>A. </b></span><button id="optionA" onclick="checkTheResponse(0,event)"></button></div> 
+            <div><span><b>B. </b></span><button id="optionB" onclick="checkTheResponse(1,event)"></button></div>
+            <div><span><b>C. </b></span><button id="optionC" onclick="checkTheResponse(2,event)"></button></div>
+            <div><span><b>D. </b></span><button id="optionD" onclick="checkTheResponse(3,event)"></button></div> 
+        </div>
+        <br>
+        <br>
+        <button id="nextQuestion" disabled>Next</button>
+     </div>
+     <div id="contentRight" style="border: 1px solid green; margin: 5px;">
+        <img src="/image/watching.jpg" alt="watching" id="image" height="230px" width="230px" style="border-radius: 10px;">
+        <p id="responseSection">Still Waiting for your response</p>
+     </div>
+    </div>
+    </div>
+
+    <script>
+
+        const show = document.getElementById('demo');
+        const optionA = document.getElementById('optionA');
+        const optionB = document.getElementById('optionB');
+        const optionC = document.getElementById('optionC');
+        const optionD = document.getElementById('optionD');
+        const nextQuestion= document.getElementById('nextQuestion');
+        const responseSection = document.getElementById('responseSection');
+        const image = document.getElementById('image');
+        let i=1;
+        let quizId = "{{quizId}}"
+        let fetchedData;
+        let answer=[];
+        /*
+       let timer =  setInterval(()=>{
+          show.innerHTML= question[i].id+". "+question[i].title;
+          optionA.innerHTML= question[i].options[0];
+          optionB.innerHTML= question[i].options[1];
+          optionC.innerHTML= question[i].options[2];
+          optionD.innerHTML= question[i].options[3];
+          
+          console.log(question[i]);
+          i++;
+          if(i==5){
+            clearInterval(timer);
+        }
+        },5000);
+        */
+
+          nextQuestion.addEventListener('click',(event)=>{
+          
+          show.innerHTML= fetchedData[i].id+". "+fetchedData[i].title;
+          optionA.innerHTML= fetchedData[i].options[0];
+          optionB.innerHTML= fetchedData[i].options[1];
+          optionC.innerHTML= fetchedData[i].options[2];
+          optionD.innerHTML= fetchedData[i].options[3];
+          optionA.disabled = false;
+          optionB.disabled = false;
+          optionC.disabled = false;
+          optionD.disabled = false;
+          nextQuestion.disabled = true;
+          image.src='/image/watching.jpg';
+          responseSection.innerHTML = 'Still Waiting for your response';
+          console.log(fetchedData[i]);
+          i++;
+          console.log(i);
+
+        checkTheEvent(event);
+          
+       })
+
+       function startQuiz(){
+        fetch(`http://localhost:3000/quiz/${quizId}`).then(response => response.json()).then(data=>{
+            fetchedData=data;
+            for(let y=0;y<fetchedData.length;y++){
+                answer.push(fetchedData[y].answer);
+            }
+            console.log(answer);
+            console.log('Received data:', fetchedData);
+            show.innerHTML= fetchedData[0].id+". "+fetchedData[0].title;
+            optionA.innerHTML= fetchedData[0].options[0];
+            optionB.innerHTML= fetchedData[0].options[1];
+            optionC.innerHTML= fetchedData[0].options[2];
+            optionD.innerHTML= fetchedData[0].options[3];
+
+        }).catch(error => {
+         console.error('Error fetching data:', error);
+       });
+          
+       }
+
+       function checkTheResponse(response,e){
+        checkTheEvent(e);
+        clearInterval(countdown);
+        console.log(i);
+           if(i !== fetchedData.length){
+              nextQuestion.disabled = false;
+          }
+          if(i===fetchedData.length){
+            document.getElementById('finishMessage').innerHTML='Quiz is completed';
+          }
+          optionA.disabled = true;
+          optionB.disabled = true;
+          optionC.disabled = true;
+          optionD.disabled = true;
+          
+           for(let x=0;x<fetchedData.length;x++){
+                    if((i-1)===x){
+                      if(response===answer[x]){
+                          responseSection.innerHTML = "Hurray!, Your answer is right";
+                          image.src = '/image/happy.jpg';
+                           }
+                       else{
+                          responseSection.innerHTML = "Huuh!, Your answer is wrong";
+                          image.src = '/image/crying.jpg';
+                          }
+                console.log(i-1);
+                console.log(response);
+            }
+           }
+       }
+
+        // for showing timer
+          // Set the countdown time in seconds
+        const countdownTime = 10; // 60 seconds
+
+        // Initialize the timer
+        let timeRemaining = countdownTime;
+        updateTimer();
+
+        // Start the countdown
+        const countdown = setInterval(function (){
+            timeRemaining--;
+            if (timeRemaining < 0) {
+                clearInterval(countdown);
+                optionA.disabled = true;
+                optionB.disabled = true;
+                optionC.disabled = true;
+                optionD.disabled = true;
+                nextQuestion.disabled = false;
+                responseSection.innerHTML = "Confused !!!, Because no any options selected";
+                image.src = '/image/confuse.jpg';
+            }
+             else {
+                updateTimer();
+            }
+        },1000);
+
+        let countdownAgain = countdown;
+
+        function updateTimer() {
+            const minutes = Math.floor(timeRemaining / 60);
+            const seconds = timeRemaining % 60;
+            const formattedTime = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+            document.getElementById("timer").innerHTML = formattedTime;
+        }
+
+        function checkTheEvent(e){
+            console.log(e.target);
+
+            if(e.target.id ==='optionA' || e.target.id ==='optionB' || e.target.id ==='optionC' || e.target.id ==='optionD'){
+                clearInterval(countdownAgain);
+            }
+            
+            if(e.target.id === 'nextQuestion'){
+                timeRemaining = countdownTime;
+                updateTimer();
+                countdownAgain = setInterval(function (){
+                  timeRemaining--;
+                 if (timeRemaining < 0) {
+                  clearInterval(countdownAgain);
+                  optionA.disabled = true;
+                  optionB.disabled = true;
+                  optionC.disabled = true;
+                  optionD.disabled = true;
+                  nextQuestion.disabled = false;
+                  responseSection.innerHTML = "Confused !!!, Because no any options selected";
+                  image.src = '/image/confuse.jpg';
+                  if(i===(fetchedData.length)){
+                    i++;
+                    nextQuestion.disabled = true;
+                    document.getElementById('finishMessage').innerHTML='Quiz is completed';
+                  }
+            }
+             else {
+                updateTimer();
+            }
+        },1000);
+            }
+        }
+        
+    </script>
+</body>
+</html>

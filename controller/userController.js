@@ -1,5 +1,8 @@
 var jwt=require('jsonwebtoken');
 var Register=require('../src/models/registers');
+
+
+
 module.exports.getAllUser=async function getAllUser(req,res){
         
      //for querying
@@ -111,4 +114,10 @@ module.exports.postUpdateUser = async function postUpdateUser(req,res){
         res.status(400).json({"Error":err.message});
    }
    
+}
+
+module.exports.getQuiz = async function getQuiz(req,res){
+    const quizId = req.params.quizId;
+    console.log(quizId);
+    res.render('quiz',{quizId:quizId});
 }
