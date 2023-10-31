@@ -20,7 +20,6 @@ app.set('view engine','hbs');
 var authRouter=require('./router/authRouter');
 var userRouter=require('./router/userRouter');
 
-
 app.get("/",function(req,res){
     res.render("index",{books:books}); 
 });
